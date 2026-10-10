@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { LogoMark } from './Art.jsx';
-import Icon from '../../../help_assistant_changed_files/frontend/src/components/icons.jsx';
+import Icon from './icons.jsx';
 import { formatDate, inr } from '../lib/format.js';
 import { PERSONAL, TOPICS, normalize, pick, rank, suggestionsFor, tokens } from '../lib/helpKb.js';
 import { summarize } from '../lib/insights.js';
