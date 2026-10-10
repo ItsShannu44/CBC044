@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import HelpAssistant from './components/HelpAssistant.jsx';
 import Layout from './components/Layout.jsx';
 import { BrandLoader } from './components/ui.jsx';
 import { AfterSignIn, LoggedOutFallback, NotFound, OfflineBanner, StartupProblem } from './components/Guards.jsx';
@@ -45,7 +46,12 @@ function AppRoutes() {
       </>
     );
   }
-  return <AppTree user={user} />;
+  return (
+    <>
+      <AppTree user={user} />
+      <HelpAssistant />
+    </>
+  );
 }
 
 function AppTree({ user }) {

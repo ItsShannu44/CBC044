@@ -204,6 +204,13 @@ const PATHS = {
   trending: <path d="M3 17l6-6 4 4 8-8M15 7h6v6" />,
   pencil: <path d="M4 20h4L19 9l-4-4L4 16v4ZM13.5 6.5l4 4" />,
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  help: (
+    <>
+      <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />
+      <path d="M9.4 9.2a2.7 2.7 0 1 1 3.8 2.5c-.8.4-1.2 1-1.2 1.8M12 16.6v.2" />
+    </>
+  ),
+  chat: <path d="M5 18.5 3.5 21l.8-4A8 8 0 1 1 7.6 19.4 8.4 8.4 0 0 1 5 18.5Z" />,
   circleClock: (
     <>
       <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" />

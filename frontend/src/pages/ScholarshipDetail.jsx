@@ -361,7 +361,7 @@ export default function ScholarshipDetail() {
         )}
       </motion.div>
 
-      <div className="sticky bottom-3 z-20 mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-paper/90 px-4 py-3 shadow-[0_18px_40px_-24px_rgba(6,31,34,.6)] backdrop-blur-md">
+      <div className="sticky bottom-3 z-20 mt-6 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-line bg-paper/90 py-3 pl-4 pr-4 xs:pr-20 shadow-[0_18px_40px_-24px_rgba(6,31,34,.6)] backdrop-blur-md">
         <span />
         <span className="flex gap-2">
           <button type="button" className="btn btn-quiet btn-small" onClick={toggleSaved} aria-pressed={saved}>
