@@ -1,6 +1,6 @@
 // Routes used by both students and admins.
 import { Router } from 'express';
-import { DOC_TYPES, FIELDS, OPERATORS } from '../engine/fields.js';
+import { ALWAYS_REQUIRED_DOCS, DOC_TYPES, FIELDS, OPERATORS } from '../engine/fields.js';
 import { HttpError } from '../errors.js';
 import { requireAuth } from '../middleware/auth.js';
 import { Application, Document, Scholarship, User } from '../models/index.js';
@@ -37,7 +37,7 @@ sharedRouter.get('/landing', async (_req, res) => {
 
 // The form definitions: profile fields, rule operators, document types, status names.
 sharedRouter.get('/meta', (_req, res) => {
-  res.json({ fields: FIELDS, operators: OPERATORS, docTypes: DOC_TYPES, statuses: STATUS_LABELS });
+  res.json({ fields: FIELDS, operators: OPERATORS, docTypes: DOC_TYPES, statuses: STATUS_LABELS, alwaysRequiredDocs: ALWAYS_REQUIRED_DOCS });
 });
 
 // Download a document. Only its owner and admins may open it.

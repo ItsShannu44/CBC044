@@ -166,7 +166,9 @@ export function ScholarshipForm() {
   const navigate = useNavigate();
   const toast = useToast();
   const { data, error, loading } = useLoad(() => (editing ? api(`/admin/scholarships/${id}`) : Promise.resolve(null)), [id]);
-  const [form, setForm] = useState({ name: '', provider: '', description: '', amount: '', deadline: '', rules: [], documents: [] });
+  const always = meta.alwaysRequiredDocs || [];
+  const withAlways = (docs) => [...docs.filter((d) => !always.includes(d.docType)), ...always.map((docType) => ({ docType, mandatory: true }))];
+  const [form, setForm] = useState({ name: '', provider: '', description: '', amount: '', deadline: '', rules: [], documents: withAlways([]) });
   const [errors, setErrors] = useState([]);
   const [busy, setBusy] = useState(false);
 
@@ -176,7 +178,7 @@ export function ScholarshipForm() {
     setForm({
       name: s.name, provider: s.provider, description: s.description, amount: s.amount, deadline: istDateInput(s.deadline),
       rules: s.rules.map(({ field, operator, value, mandatory, weight }) => ({ field, operator, value, mandatory, weight })),
-      documents: s.requiredDocuments.map(({ docType, mandatory }) => ({ docType, mandatory })),
+      documents: withAlways(s.requiredDocuments.map(({ docType, mandatory }) => ({ docType, mandatory }))),
     });
   }, [data]);
 
@@ -298,17 +300,19 @@ export function ScholarshipForm() {
           <ul className="divide-y divide-line">
             {Object.entries(meta.docTypes).map(([docType, label]) => {
               const chosen = docOf(docType);
+              const locked = always.includes(docType);
               return (
                 <li key={docType} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
                   <label className="inline-flex items-center gap-2">
-                    <input type="checkbox" className="h-4 w-4 accent-[var(--color-ink)]" checked={Boolean(chosen)}
+                    <input type="checkbox" className="h-4 w-4 accent-[var(--color-ink)]" checked={Boolean(chosen) || locked} disabled={locked}
                       onChange={(e) => set({
                         documents: e.target.checked ? [...form.documents, { docType, mandatory: true }] : form.documents.filter((d) => d.docType !== docType),
                       })} />
                     {label}
+                    {locked && <span className="chip !py-0 !text-[0.72rem]" data-tone="info">Required for every scholarship</span>}
                   </label>
                   {chosen && (
-                    <select className="input !w-auto" aria-label={`${label} is`} value={String(chosen.mandatory)}
+                    <select className="input !w-auto" aria-label={`${label} is`} value={locked ? 'true' : String(chosen.mandatory)} disabled={locked}
                       onChange={(e) => set({ documents: form.documents.map((d) => (d.docType === docType ? { ...d, mandatory: e.target.value === 'true' } : d)) })}>
                       <option value="true">Mandatory</option>
                       <option value="false">Optional</option>

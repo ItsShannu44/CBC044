@@ -2,7 +2,7 @@
 import { Router } from 'express';
 import { Op } from 'sequelize';
 import { evaluate, validateRule } from '../engine/eligibility.js';
-import { DOC_TYPES, PROFILE_KEYS } from '../engine/fields.js';
+import { DOC_TYPES, PROFILE_KEYS, withAlwaysRequired } from '../engine/fields.js';
 import { HttpError } from '../errors.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 import {
@@ -67,7 +67,7 @@ function readScholarshipForm(body) {
   }
 
   if (errors.length) throw new HttpError(422, errors[0], { errors });
-  return { scholarship: { name, provider, description, amount, deadline }, rules: cleanRules, documents };
+  return { scholarship: { name, provider, description, amount, deadline }, rules: cleanRules, documents: withAlwaysRequired(documents) };
 }
 
 adminRouter.get('/scholarships', async (_req, res) => {
@@ -286,8 +286,19 @@ adminRouter.post('/applications/:id/documents/:docType', async (req, res) => {
   if (!['VERIFIED', 'REJECTED'].includes(verdict)) throw new HttpError(422, 'Choose verify or reject.');
   if (verdict === 'REJECTED' && !reason) throw new HttpError(422, 'Tell the student what is wrong with the document.');
 
-  const review = application.reviews.find((r) => r.docType === docType);
-  if (!review) throw new HttpError(404, 'This document is not part of the application.');
+  let review = application.reviews.find((r) => r.docType === docType);
+  if (!review) {
+    // A document that became required after the student submitted (such as the bank
+    // passbook) can still be reviewed once it is in the student's vault.
+    const checklist = await buildChecklist(application.scholarship, application.userId, application);
+    const item = checklist.find((i) => i.docType === docType);
+    if (!item) throw new HttpError(404, 'This document is not part of the application.');
+    if (!item.document) throw new HttpError(409, `The student has not uploaded the ${item.label.toLowerCase()} yet.`);
+    [review] = await ApplicationDocument.findOrCreate({
+      where: { applicationId: application.id, docType },
+      defaults: { status: 'UPLOADED' },
+    });
+  }
 
   await sequelize.transaction(async (transaction) => {
     await review.update({ status: verdict, reason: verdict === 'REJECTED' ? reason : null }, { transaction });

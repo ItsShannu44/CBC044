@@ -57,3 +57,13 @@ export const DOC_TYPES = {
 };
 
 export const PROFILE_KEYS = Object.keys(FIELDS);
+
+// Documents every scholarship requires, whatever the reviewer chooses. Scholarship
+// payments go to the student's bank account, so the passbook is always needed.
+export const ALWAYS_REQUIRED_DOCS = ['BANK_PASSBOOK'];
+
+// Adds the always-required documents to a list, as mandatory.
+export function withAlwaysRequired(documents = []) {
+  const list = documents.filter((d) => !ALWAYS_REQUIRED_DOCS.includes(d.docType));
+  return [...list, ...ALWAYS_REQUIRED_DOCS.map((docType) => ({ docType, mandatory: true }))];
+}

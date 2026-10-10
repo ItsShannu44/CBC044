@@ -3,6 +3,7 @@ import { config } from './config.js';
 import { User, sequelize } from './models/index.js';
 import { seedDemoData } from './seed-data.js';
 import { runDeadlineJob } from './services/deadlines.js';
+import { ensureAlwaysRequiredDocuments } from './services/requiredDocs.js';
 
 const HOUR_MS = 60 * 60 * 1000;
 
@@ -23,6 +24,12 @@ async function start() {
   if (config.seedDemo && (await User.count()) === 0) {
     await seedDemoData();
     console.log('Empty database: demo data loaded.');
+  }
+
+  // Every scholarship requires the bank passbook; bring older data up to date.
+  const docs = await ensureAlwaysRequiredDocuments();
+  if (docs.added || docs.madeMandatory) {
+    console.log(`Bank passbook now required: added to ${docs.added} scholarship(s), made mandatory on ${docs.madeMandatory}.`);
   }
 
   // Deadline job: once now, then every hour. Running it at startup also covers hosts that sleep when idle.
