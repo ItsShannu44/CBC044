@@ -1,0 +1,23 @@
+# Render Blueprint: one web service (API + built React app) and one PostgreSQL database.
+# In Render choose New > Blueprint and pick this repository.
+databases:
+  - name: vidyasutra-db
+    plan: free
+
+services:
+  - type: web
+    name: vidyasutra
+    runtime: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vidyasutra-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true

@@ -1,0 +1,16 @@
+{
+  "name": "vidyasutra",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Scholarship eligibility and application manager: explainable matching, document checklist, deadlines and status tracking.",
+  "scripts": {
+    "setup": "npm install --prefix backend && npm install --prefix frontend",
+    "dev:api": "npm run dev --prefix backend",
+    "dev:web": "npm run dev --prefix frontend",
+    "build": "npm install --prefix backend && npm install --prefix frontend --include=dev && npm run build --prefix frontend",
+    "start": "npm start --prefix backend",
+    "seed": "npm run seed --prefix backend",
+    "test": "npm test --prefix backend"
+  },
+  "engines": { "node": ">=20" }
+}
