@@ -295,7 +295,7 @@ function Hero({ data }) {
           <motion.div initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.1, ease: EASE }} className="absolute inset-0">
             <Scene3D />
           </motion.div>
-          <motion.div style={L.cards} className="pointer-events-none absolute inset-0 hidden sm:block">
+          {/*<motion.div style={L.cards} className="pointer-events-none absolute inset-0 hidden sm:block">
             <FloatCard className="right-[0%] top-[16%]" delay={2.2}>
               <p className="text-[0.7rem] uppercase tracking-wide text-white/60">Your match</p>
               <p className="text-[1.5rem] font-extrabold leading-none text-mint">92%</p>
@@ -305,7 +305,7 @@ function Hero({ data }) {
               <p className="flex items-center gap-2 text-[0.8rem] font-bold"><span className="grid h-5 w-5 place-items-center rounded-full bg-pass"><Icon name="check" className="h-3 w-3" strokeWidth={3} /></span>Income certificate</p>
               <p className="mt-0.5 pl-7 text-[0.7rem] text-mint">Matches your profile</p>
             </FloatCard>
-          </motion.div>
+          </motion.div>*/}
         </div>
       </div>
 
