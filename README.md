@@ -136,4 +136,4 @@ Some UI components are adapted from "React Bits" (https://reactbits.dev) by Davi
 
 VidyaSutra — Making scholarship discovery simpler, clearer, and more accessible.
 
-Developed with ❤️ by Team FluxWave.
+Developed by Team FluxWave.
