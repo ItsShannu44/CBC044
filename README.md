@@ -9,7 +9,6 @@ through documents, deadlines and review.
 Built for CBC 2.0, Problem Statement 29, by team FluxWave.
 
 **Live site:** <https://vidyasutra.onrender.com/>
-**Repository:** <https://github.com/ItsShannu44/CBC044>
 
 > The site runs on Render's free plan. If it has been idle it sleeps, and the first visit can take about a minute
 > to load.
